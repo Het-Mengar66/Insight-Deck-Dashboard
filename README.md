@@ -82,3 +82,26 @@ Feel free to explore, contribute, and help us build the future of student data i
 
 ---
 
+<img width="2880" height="1286" alt="pic1" src="https://github.com/user-attachments/assets/0ee95577-bf57-4921-bfb5-9b2485a1911b" />
+
+---
+
+<img width="2878" height="1286" alt="pic2" src="https://github.com/user-attachments/assets/f6735538-edbd-4a64-aa6d-8c4bd29a0607" />
+
+---
+
+<img width="2878" height="1280" alt="pic3" src="https://github.com/user-attachments/assets/adabcd3c-e155-4036-a906-c854e0acd5c9" />
+
+---
+
+<img width="2876" height="1270" alt="pic4" src="https://github.com/user-attachments/assets/56622cb5-599f-465b-a568-5dc5b493209c" />
+
+---
+
+<img width="2880" height="1270" alt="pic5" src="https://github.com/user-attachments/assets/74c4f311-db29-4181-8ccc-a3bd338044f9" />
+
+---
+
+<img width="2870" height="1262" alt="pic6" src="https://github.com/user-attachments/assets/4a9b2ec6-29d4-4fd2-ab13-e20a7a9553d9" />
+
+
