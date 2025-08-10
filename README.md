@@ -105,14 +105,12 @@ Feel free to explore, contribute, and help us build the future of student data i
 <img width="2870" height="1262" alt="pic6" src="https://github.com/user-attachments/assets/4a9b2ec6-29d4-4fd2-ab13-e20a7a9553d9" />
 
 ---
-![pic7](https://github.com/user-attachments/assets/17de9d28-296b-4732-b5cc-efc170b2dd87)
 
 ---
 ### 🎥 Watch the Live Demo
 
 Check out this quick video walkthrough of the **Insight Deck Dashboard** to see all the features in action, from uploading data to generating real-time analytics.
 
-[![Insight Deck Dashboard Demo]((https://github.com/user-attachments/assets/59c60de9-58ee-4e62-8c41-f8e5e38e96c2)
-)]([https://drive.google.com/file/d/YOUR_FILE_ID/view?usp=sharing](https://drive.google.com/file/d/12TNrt9id3BTsfQLvf75CULWjmC6HyBoU/view?usp=drive_link))
+[![Insight Deck Dashboard Demo]([https://drive.google.com/file/d/YOUR_FILE_ID/view?usp=sharing](https://drive.google.com/file/d/12TNrt9id3BTsfQLvf75CULWjmC6HyBoU/view?usp=drive_link))
 
-*Click the thumbnail above to watch the video.*
+*Click the above link to watch the video.*
