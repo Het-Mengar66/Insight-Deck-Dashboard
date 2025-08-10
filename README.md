@@ -111,6 +111,6 @@ Feel free to explore, contribute, and help us build the future of student data i
 
 Check out this quick video walkthrough of the **Insight Deck Dashboard** to see all the features in action, from uploading data to generating real-time analytics.
 
-[![Insight Deck Dashboard Demo]([https://drive.google.com/file/d/YOUR_FILE_ID/view?usp=sharing](https://drive.google.com/file/d/12TNrt9id3BTsfQLvf75CULWjmC6HyBoU/view?usp=drive_link))
+**[Watch the Project Demo Video Here]([https://drive.google.com/file/d/12TNrt9id3BTsfQLvf75CULWjmC6HyBoU/view?usp=sharing](https://drive.google.com/file/d/12TNrt9id3BTsfQLvf75CULWjmC6HyBoU/view?usp=drive_link))**
 
 *Click the above link to watch the video.*
