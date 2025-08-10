@@ -12,13 +12,12 @@ This interactive dashboard provides a clear and dynamic view of our student comm
 Use the Control Panel sidebar on the left to filter, search, and manage the data.
 """)
 
-# The file uploader is in the sidebar
 file = st.sidebar.file_uploader("Upload your data file", type=["xlsx", "csv"])
     
-# The rest of the app only runs if a file is uploaded
+
 if file is not None:
     try:
-        # Correctly read either Excel or CSV files
+       
         if file.name.endswith(".xlsx"):
             df = pd.read_excel(file)
         else:
@@ -147,16 +146,14 @@ if file is not None:
                 st.plotly_chart(fig_interests, use_container_width=True)
 
 
-                # --- NEW: Branch vs Year Heatmap ---
+                # --- Branch vs Year Heatmap ---
                 st.subheader("Branch vs. Year Distribution")
                 
-                # Create a pivot table to get the counts
                 heatmap_data = pd.crosstab(df_filtered['Branch'], df_filtered['Year'])
                 
-                # Create the heatmap figure using Plotly Express
                 fig = px.imshow(
                     heatmap_data,
-                    text_auto=True, # Display the numbers on the heatmap
+                    text_auto=True, 
                     aspect="auto",
                     labels=dict(x="Year of Study", y="Branch", color="Number of Students"),
                     color_continuous_scale=px.colors.sequential.Cividis_r
@@ -170,4 +167,5 @@ if file is not None:
     except Exception as e:
         st.error(f"An error occurred while processing the file: {e}")
 else:
+
     st.info("Please upload a file using the control panel on the left to get started.") 
