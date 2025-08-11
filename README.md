@@ -68,17 +68,19 @@ Powered by [Streamlit](https://streamlit.io/), a cutting-edge Python framework d
 
 ---
 
-## 🚀 Future Goals
+## 🤖 AI powered Features
 
-* **🤖 AI-Enhanced Email Generation**
-  Integrate advanced AI to automatically generate personalized emails and summaries based on student data, saving time and increasing engagement.
+✨ Newly Integrated Feature – The dashboard now comes with Generative AI capabilities to create highly personalized and professional emails instantly!
 
-* **📈 Predictive Analytics & Recommendations**
-  Add AI-powered predictions and actionable insights to help educators identify trends and tailor interventions.
+With Google Gemini API seamlessly integrated, you can:
 
----
+Auto-generate personalized student emails based on selected data (branch, year, interests, etc.).
 
-Feel free to explore, contribute, and help us build the future of student data interaction!
+Customize tone — formal, friendly, or persuasive — in one click.
+
+Preview before sending, ensuring your outreach stays relevant and engaging.
+
+Save time and increase response rates by avoiding manual drafting.
 
 ---
 
@@ -90,11 +92,15 @@ Feel free to explore, contribute, and help us build the future of student data i
 
 ---
 
-<img width="2878" height="1280" alt="pic3" src="https://github.com/user-attachments/assets/adabcd3c-e155-4036-a906-c854e0acd5c9" />
+<img width="2880" height="1274" alt="pic3" src="https://github.com/user-attachments/assets/9950d125-5ec5-43fd-b60d-1c5722065f92" />
 
 ---
 
-<img width="2876" height="1270" alt="pic4" src="https://github.com/user-attachments/assets/56622cb5-599f-465b-a568-5dc5b493209c" />
+<img width="2880" height="1278" alt="pic3 1" src="https://github.com/user-attachments/assets/c7b991bd-6a7e-438b-8ae5-157cadc1090c" />
+
+---
+
+<img width="2880" height="1280" alt="pic4" src="https://github.com/user-attachments/assets/2e8f8900-a9de-4b49-bce3-d8d43beab5cb" />
 
 ---
 
@@ -114,3 +120,7 @@ Check out this quick video walkthrough of the **Insight Deck Dashboard** to see 
 [Insight Deck Dashboard Demo](https://drive.google.com/file/d/12TNrt9id3BTsfQLvf75CULWjmC6HyBoU/view?usp=sharing)
 
 *Click the above link to watch the video.*
+
+---
+
+Feel free to explore, contribute, and help us build the future of student data interaction!
