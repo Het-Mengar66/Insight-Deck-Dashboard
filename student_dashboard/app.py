@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from collections import Counter
 import plotly.express as px
+import google.generativeai as genai
 
 # --- Page Title and Information ---
 st.set_page_config(page_title="Insight Deck Dashboard", layout="wide")
@@ -12,16 +13,23 @@ This interactive dashboard provides a clear and dynamic view of our student comm
 Use the Control Panel sidebar on the left to filter, search, and manage the data.
 """)
 
-file = st.sidebar.file_uploader("Upload your data file", type=["xlsx", "csv"])
-    
+# --- API Key and Model Configuration ---
+try:
+    genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+    model = genai.GenerativeModel('gemini-1.5-flash-latest')
+except Exception as e:
+    st.warning("⚠️ Gemini API Key not found. AI features are disabled.")
+    model = None 
 
+file = st.file_uploader("Upload your data file", type=["xlsx", "csv"])
+    
 if file is not None:
     try:
-       
-        if file.name.endswith(".xlsx"):
+        if file.name.endswith(".xlsx",".csv"):
             df = pd.read_excel(file)
         else:
             df = pd.read_csv(file)
+
 
         # --- Data Cleaning ---
         df['Year'] = pd.to_numeric(df['Year'], errors='coerce').fillna(0).astype(int)
@@ -32,11 +40,15 @@ if file is not None:
 
         # --- Sidebar: Control Panel ---
         st.sidebar.header("Control Panel")
-        search_query = st.sidebar.text_input("Search Students", placeholder="Search by Name or Email...")
+        search_query = st.sidebar.text_input("Search Students", 
+                                             placeholder="Search by Name or Email...")
         
         unique_branches = sorted(df["Branch"].unique())
         unique_years = sorted(df["Year"].unique())
-        all_interests_list = [interest.strip() for interests in df["Interests"].dropna() for interest in interests.split(',') if interest.strip()]
+        all_interests_list = [interest.strip() for interests in 
+                              df["Interests"].dropna() for interest in interests.split(',') 
+                              if interest.strip()
+                            ]
         unique_interests = sorted(list(set(all_interests_list)))
 
         selected_branches = st.sidebar.multiselect("Filter by Branch", options=unique_branches, default=unique_branches)
@@ -60,13 +72,13 @@ if file is not None:
             )]
             
         st.sidebar.download_button(
-            label="Export Filtered Data",
+            label="⬇️Export Filtered Data",
             data=df_filtered.to_csv(index=False).encode('utf-8'),
             file_name='filtered_student_data.csv',
             mime='text/csv'
         )
 
-        # --- Main Content with Tabs ---
+        # --- Tabs ---
         data_tab, analytics_tab = st.tabs(["📋 Data & Email", "📊 Analytics Dashboard"])
 
         # --- Tab 1: Data Table and Email Composer ---
@@ -90,8 +102,19 @@ if file is not None:
             if not selected_students.empty:
 
                 st.write(f"You have selected {len(selected_students)} student(s).")
+                email_topic = st.text_input("Email Topic", placeholder="e.g., An upcoming Python workshop")
+                if st.button("✍️ Generate with AI", use_container_width=True) and model:
+                    if email_topic:
+                        with st.spinner("Drafting..."):
+                            prompt = f"Write a friendly, professional email about: '{email_topic}'. Include '{{Name}}' for personalization and sign off as 'The Coordination Team'."
+                            response = model.generate_content(prompt)
+                            st.session_state.ai_email_draft = response.text
+                    else:
+                        st.warning("Please enter a topic.")
+
+
                 email_subject = st.text_input("Email Subject")
-                email_body_template = st.text_area("Draft your message")
+                email_body_template = st.text_area("Email Body", st.session_state.get('ai_email_draft', "Hi {Name},\n\n"), height=250)
 
                 if st.button("Preview & Generate Emails"):
                     st.subheader("Generated Emails Preview")
@@ -105,23 +128,35 @@ if file is not None:
 
         # --- Tab 2: Analytics Dashboard ---
         with analytics_tab:
-            st.header("Analytics Dashboard")
-            st.write("Visualizations based on the **filtered data** set in the sidebar.")
+            st.header("Visual Analytics")
+            st.write("Visualizations are dynamically updated based on the **filtered data**.")
 
             if not df_filtered.empty:
                 col1, col2 = st.columns(2)
 
+                # Chart 1: Students per Branch
                 with col1:
                     st.subheader("Students per Branch")
-                    branch_counts = df_filtered['Branch'].value_counts()
-                    st.bar_chart(branch_counts)
+                    branch_counts = df_filtered['Branch'].value_counts().reset_index()
+                    branch_counts.columns = ['Branch', 'Count']
+                    fig_branch = px.bar(
+                        branch_counts, x='Branch', y='Count',
+                        title="Distribution of Students Across Branches",
+                        color='Branch', text_auto=True
+                    )
+                    st.plotly_chart(fig_branch, use_container_width=True)
 
+                # Chart 2: Students per Year
                 with col2:
                     st.subheader("Students per Year")
-                    year_counts = df_filtered['Year'].value_counts().sort_index()
-                    st.bar_chart(year_counts)
-
-                
+                    year_counts = df_filtered['Year'].value_counts().sort_index().reset_index()
+                    year_counts.columns = ['Year', 'Count']
+                    fig_year = px.pie(
+                        year_counts, names='Year', values='Count',
+                        title="Proportion of Students by Year",
+                        hole=0.4
+                    )
+                    st.plotly_chart(fig_year, use_container_width=True)
 
                 # --- Top Interests ---
                 st.subheader("Top 10 Interests")
@@ -146,14 +181,16 @@ if file is not None:
                 st.plotly_chart(fig_interests, use_container_width=True)
 
 
-                # --- Branch vs Year Heatmap ---
+                # --- NEW: Branch vs Year Heatmap ---
                 st.subheader("Branch vs. Year Distribution")
                 
+                # Create a pivot table to get the counts
                 heatmap_data = pd.crosstab(df_filtered['Branch'], df_filtered['Year'])
                 
+                # Create the heatmap figure using Plotly Express
                 fig = px.imshow(
                     heatmap_data,
-                    text_auto=True, 
+                    text_auto=True, # Display the numbers on the heatmap
                     aspect="auto",
                     labels=dict(x="Year of Study", y="Branch", color="Number of Students"),
                     color_continuous_scale=px.colors.sequential.Cividis_r
@@ -167,5 +204,4 @@ if file is not None:
     except Exception as e:
         st.error(f"An error occurred while processing the file: {e}")
 else:
-
     st.info("Please upload a file using the control panel on the left to get started.") 
