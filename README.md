@@ -30,6 +30,22 @@
 
 ---
 
+## 🤖 AI powered Features
+
+✨ Newly Integrated Feature – The dashboard now comes with Generative AI capabilities to create highly personalized and professional emails instantly!
+
+- With Google Gemini API seamlessly integrated, you can:
+
+- Auto-generate personalized student emails based on selected data (branch, year, interests, etc.).
+
+- Customize tone — formal, friendly, or persuasive — in one click.
+
+- Preview before sending, ensuring your outreach stays relevant and engaging.
+
+- Save time and increase response rates by avoiding manual drafting.
+
+---
+
 ## 🛠️ How It Works
 
 1. **Upload** your student dataset via the sidebar (supporting CSV and Excel).
@@ -65,22 +81,6 @@ You can find the sample dataset in the repository as:
 ## ⚡ Built with Streamlit
 
 Powered by [Streamlit](https://streamlit.io/), a cutting-edge Python framework designed to transform data scripts into beautiful, shareable web apps in minutes—no front-end experience required. Streamlit enables rapid prototyping and seamless interaction, making your data come alive with minimal code.
-
----
-
-## 🤖 AI powered Features
-
-✨ Newly Integrated Feature – The dashboard now comes with Generative AI capabilities to create highly personalized and professional emails instantly!
-
-With Google Gemini API seamlessly integrated, you can:
-
-Auto-generate personalized student emails based on selected data (branch, year, interests, etc.).
-
-Customize tone — formal, friendly, or persuasive — in one click.
-
-Preview before sending, ensuring your outreach stays relevant and engaging.
-
-Save time and increase response rates by avoiding manual drafting.
 
 ---
 
@@ -124,3 +124,5 @@ Check out this quick video walkthrough of the **Insight Deck Dashboard** to see 
 ---
 
 Feel free to explore, contribute, and help us build the future of student data interaction!
+
+---
