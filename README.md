@@ -84,7 +84,7 @@ Powered by [Streamlit](https://streamlit.io/), a cutting-edge Python framework d
 
 ---
 
-<img width="2880" height="1286" alt="pic1" src="https://github.com/user-attachments/assets/0ee95577-bf57-4921-bfb5-9b2485a1911b" />
+<img width="2864" height="1274" alt="pic1" src="https://github.com/user-attachments/assets/e7b42f0b-fbb4-45e7-9969-70cd8a5ad953" />
 
 ---
 
