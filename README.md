@@ -1,6 +1,6 @@
 # 🎓 Insight Deck: Student Data Dashboard
 
-**Insight Deck** is a sleek, interactive web application powered by **Streamlit** that lets you effortlessly upload, explore, and engage with student data. Designed for educators and administrators, it combines intuitive filtering, rich visual analytics, and seamless communication tools—all in one place.
+Insight Deck is an intelligent, interactive platform built with Streamlit, crafted to simplify the way you work with student data. Whether it’s uploading datasets, uncovering patterns, or visualizing key metrics, it delivers a smooth, engaging experience. Tailored for educators and decision-makers, Insight Deck blends powerful analytics, smart filtering, and clear visual storytelling into a single, unified workspace.
 
 ---
 
@@ -80,7 +80,7 @@ You can find the sample dataset in the repository as:
 
 ## ⚡ Built with Streamlit
 
-Powered by [Streamlit](https://streamlit.io/), a cutting-edge Python framework designed to transform data scripts into beautiful, shareable web apps in minutes—no front-end experience required. Streamlit enables rapid prototyping and seamless interaction, making your data come alive with minimal code.
+Built with [Streamlit](https://streamlit.io/) — a versatile Python framework that empowers developers to craft interactive, data-driven web applications with precision and speed. By combining analytical logic with dynamic visual components, Streamlit bridges the gap between data exploration and intuitive user experience. This project leverages its robust ecosystem to deliver a responsive, engaging interface tailored for meaningful insights.
 
 ---
 
