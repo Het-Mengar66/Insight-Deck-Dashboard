@@ -21,11 +21,11 @@ except Exception as e:
     st.warning("⚠️ Gemini API Key not found. AI features are disabled.")
     model = None 
 
-file = st.file_uploader("Upload your data file", type=["xlsx", "csv"])
+file = st.file_uploader("Upload your data file", type=[".xlsx", ".csv"])
     
 if file is not None:
     try:
-        if file.name.endswith(".xlsx",".csv"):
+        if file.name.endswith(".xlsx"):
             df = pd.read_excel(file)
         else:
             df = pd.read_csv(file)
@@ -40,8 +40,7 @@ if file is not None:
 
         # --- Sidebar: Control Panel ---
         st.sidebar.header("Control Panel")
-        search_query = st.sidebar.text_input("Search Students", 
-                                             placeholder="Search by Name or Email...")
+        search = st.sidebar.text_input("Search Students", placeholder="Search by Name or Email...")
         
         unique_branches = sorted(df["Branch"].unique())
         unique_years = sorted(df["Year"].unique())
@@ -49,31 +48,32 @@ if file is not None:
                               df["Interests"].dropna() for interest in interests.split(',') 
                               if interest.strip()
                             ]
-        unique_interests = sorted(list(set(all_interests_list)))
+        unique_interests = sorted(df["Interests"].unique())
 
-        selected_branches = st.sidebar.multiselect("Filter by Branch", options=unique_branches, default=unique_branches)
-        selected_years = st.sidebar.multiselect("Filter by Year", options=unique_years, default=unique_years)
+
+        selected_branches = st.sidebar.multiselect("Filter by Branch", options=unique_branches)
+        selected_years = st.sidebar.multiselect("Filter by Year", options=unique_years)
         selected_interests = st.sidebar.multiselect("Filter by Interests", options=unique_interests)
 
         # --- Filtering Logic ---
-        df_filtered = df.copy()
-        if search_query:
-            df_filtered = df_filtered[
-                df_filtered["Name"].str.contains(search_query, case=False, na=False) |
-                df_filtered["Email"].str.contains(search_query, case=False, na=False)
+        filtered_data = df.copy()
+        if search:
+            filtered_data = filtered_data[
+                filtered_data["Name"].str.contains(search, case=False, na=False) |
+                filtered_data["Email"].str.contains(search, case=False, na=False)
             ]
         if selected_branches:
-            df_filtered = df_filtered[df_filtered["Branch"].isin(selected_branches)]
+            filtered_data = filtered_data[filtered_data["Branch"].isin(selected_branches)]
         if selected_years:
-            df_filtered = df_filtered[df_filtered["Year"].isin(selected_years)]
+            filtered_data = filtered_data[filtered_data["Year"].isin(selected_years)]
         if selected_interests:
-            df_filtered = df_filtered[df_filtered["Interests"].apply(
+            filtered_data = filtered_data[filtered_data["Interests"].apply(
                 lambda x: any(interest in x for interest in selected_interests)
             )]
             
         st.sidebar.download_button(
             label="⬇️Export Filtered Data",
-            data=df_filtered.to_csv(index=False).encode('utf-8'),
+            data=filtered_data.to_csv(index=False).encode('utf-8'),
             file_name='filtered_student_data.csv',
             mime='text/csv'
         )
@@ -84,9 +84,9 @@ if file is not None:
         # --- Tab 1: Data Table and Email Composer ---
         with data_tab:
             st.header("Filtered Student Data")
-            st.info(f"Showing {len(df_filtered)} of {len(df)} students.")
+            st.info(f"Showing {len(filtered_data)} of {len(df)} students.")
 
-            df_display = df_filtered.copy()
+            df_display = filtered_data.copy()
             df_display.insert(0, "Select", False)
             edited_df = st.data_editor(
                 df_display,
@@ -107,19 +107,20 @@ if file is not None:
                     if email_topic:
                         with st.spinner("Drafting..."):
                             prompt = f"Write a friendly, professional email about: '{email_topic}'. Include '{{Name}}' for personalization and sign off as 'The Coordination Team'."
-                            response = model.generate_content(prompt)
+                            response = model.generate_content(prompt) #Sends the prompt to your AI model.
                             st.session_state.ai_email_draft = response.text
+                            #Stores the generated email draft in Streamlit’s session state so it can persist between reruns.
                     else:
                         st.warning("Please enter a topic.")
 
 
                 email_subject = st.text_input("Email Subject")
-                email_body_template = st.text_area("Email Body", st.session_state.get('ai_email_draft', "Hi {Name},\n\n"), height=250)
+                email_body = st.text_area("Email Body", st.session_state.get('ai_email_draft', "Hi {Name},\n"), height=250)
 
                 if st.button("Preview & Generate Emails"):
                     st.subheader("Generated Emails Preview")
                     for _, student in selected_students.iterrows():
-                        personalized_body = email_body_template.format(Name=student['Name'])
+                        personalized_body = email_body.format(Name=student['Name'])
                         with st.expander(f"To: {student['Name']} ({student['Email']})"):
                             st.write(f"**Subject:** {email_subject}")
                             st.code(personalized_body)
@@ -131,13 +132,13 @@ if file is not None:
             st.header("Visual Analytics")
             st.write("Visualizations are dynamically updated based on the **filtered data**.")
 
-            if not df_filtered.empty:
+            if not filtered_data.empty:
                 col1, col2 = st.columns(2)
 
                 # Chart 1: Students per Branch
                 with col1:
                     st.subheader("Students per Branch")
-                    branch_counts = df_filtered['Branch'].value_counts().reset_index()
+                    branch_counts = filtered_data['Branch'].value_counts().reset_index()
                     branch_counts.columns = ['Branch', 'Count']
                     fig_branch = px.bar(
                         branch_counts, x='Branch', y='Count',
@@ -149,12 +150,12 @@ if file is not None:
                 # Chart 2: Students per Year
                 with col2:
                     st.subheader("Students per Year")
-                    year_counts = df_filtered['Year'].value_counts().sort_index().reset_index()
+                    year_counts = filtered_data['Year'].value_counts().sort_index().reset_index()
                     year_counts.columns = ['Year', 'Count']
                     fig_year = px.pie(
                         year_counts, names='Year', values='Count',
                         title="Proportion of Students by Year",
-                        hole=0.4
+                        hole=0.3
                     )
                     st.plotly_chart(fig_year, use_container_width=True)
 
@@ -162,7 +163,7 @@ if file is not None:
                 st.subheader("Top 10 Interests")
                 filtered_interests_list = [
                     interest.strip()
-                    for interests in df_filtered["Interests"].dropna()
+                    for interests in filtered_data["Interests"].dropna()
                     for interest in interests.split(',')
                     if interest.strip()
                 ]
@@ -181,11 +182,11 @@ if file is not None:
                 st.plotly_chart(fig_interests, use_container_width=True)
 
 
-                # --- NEW: Branch vs Year Heatmap ---
-                st.subheader("Branch vs. Year Distribution")
+                # --- Branch vs Year Heatmap ---
+                st.subheader("Branch v/s Year (Heatmap)")
                 
                 # Create a pivot table to get the counts
-                heatmap_data = pd.crosstab(df_filtered['Branch'], df_filtered['Year'])
+                heatmap_data = pd.crosstab(filtered_data['Branch'], filtered_data['Year'])
                 
                 # Create the heatmap figure using Plotly Express
                 fig = px.imshow(
